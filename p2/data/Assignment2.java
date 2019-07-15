@@ -50,6 +50,24 @@ public class Assignment2 extends JDBCSubmission {
             String countryQ = "SELECT id "+
                               "FROM country "+
                               "WHERE name = ?";
+            PreparedStatement countryStatement = connection.prepareStatement(countryQ);
+            countryStatement.setString(1, countryName);
+            ResultSet countryR = countryStatement.executeQuery();
+            countryR.next();
+
+            int countryID = countryR.getInt("id");
+            String electionQ = "CREATE VIEW Tempt AS "+
+                               "SELECT id, e_date, e_type AS type "+
+                               "FROM election "+
+                               "WHERE country_id = " + Integer.toString(countryID) + " "
+                               "ORDER BY e_date DESC";
+            PreparedStatement electionStatement = connection.prepareStatement(electionQ);
+            electionStatement.excute();
+
+            String searchElecQ = "SELECT * FROM Tempt";
+            PreparedStatement searchStatement = connection.prepareStatement(searchElecQ);
+            ResultSet searchElecR = searchStatement.executeQuery();
+
 
         }
     }
