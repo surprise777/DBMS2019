@@ -4,10 +4,11 @@ import java.util.List;
 // If you are looking for Java data structures, these are highly useful.
 // Remember that an important part of your mark is for doing as much in SQL (not Java) as you can.
 // Solutions that use only or mostly Java will not receive a high mark.
-//import java.util.ArrayList;
-//import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 //import java.util.HashMap;
-//import java.util.Set;
+import java.util.Set;
 //import java.util.HashSet;
 public class Assignment2 extends JDBCSubmission {
 
@@ -150,6 +151,16 @@ public class Assignment2 extends JDBCSubmission {
     public static void main(String[] args) {
         // You can put testing code in here. It will not affect our autotester.
         System.out.println("Hello");
+        try{
+            Assignment2 test1 = new Assignment2();
+            boolean t = test1.connectDB("jdbc:postgresql://localhost:5432/csc343h-dianeh",
+                    "dianeh", "");
+            test1.electionSequence("Canada");
+            boolean t0 = test1.disconnectDB();
+        }
+        catch (ClassNotFoundException ce){
+            System.out.println("Failed to find the JDBC Driver.");
+        }
     }
 
 }
