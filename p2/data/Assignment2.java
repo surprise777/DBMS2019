@@ -67,8 +67,33 @@ public class Assignment2 extends JDBCSubmission {
             String searchElecQ = "SELECT * FROM Tempt";
             PreparedStatement searchStatement = connection.prepareStatement(searchElecQ);
             ResultSet searchElecR = searchStatement.executeQuery();
+            ArrayList<Integer> idList = new ArrayList<Integer>();
+            while(searchElecR.next()){
+                int newId = searchElecQ.getInt("id");
+                idList.add(newId);
+            }
+            for (int x = 0 ; x < idList.size(); x++)
+            {
+                int index = idList.get(x);
+                String idQ = "SELECT id "+
+                             "FROM cabinet "+
+                             "WHERE election_id = ? "+
+                             "ORDER BY start_date";
+                PreparedStatement idStatement = connection.prepareStatement(idQ);
+                idStatement.setInt(1, index);
+                ResultSet idR = idStatement.executeQuery();
+                while(idR.next()){
+                    int cabinetsID = idR.getInt("id");
+                    r.elections.add(index);
+                    r.cabinets.add(cabinetsID);
 
-
+                }
+            }
+            return result;
+            }
+        catch(SQLException se){
+            System.err.println("SQL Exception. " + "<message>: " + m.getMessage());
+            return null;
         }
     }
 
