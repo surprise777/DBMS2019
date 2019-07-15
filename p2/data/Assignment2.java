@@ -64,17 +64,17 @@ public class Assignment2 extends JDBCSubmission {
             String electionQ = "CREATE VIEW Tempt AS " +
                     "SELECT id, e_date, e_type AS type " +
                     "FROM election " +
-                    "WHERE country_id = " + Integer.toString(countryID) + " "
-            "ORDER BY e_date DESC";
+                    "WHERE country_id = " + Integer.toString(countryID) + " " +
+                    "ORDER BY e_date DESC";
             PreparedStatement electionStatement = connection.prepareStatement(electionQ);
-            electionStatement.excute();
+            electionStatement.execute();
 
             String searchElecQ = "SELECT * FROM Tempt";
             PreparedStatement searchStatement = connection.prepareStatement(searchElecQ);
             ResultSet searchElecR = searchStatement.executeQuery();
             ArrayList<Integer> idList = new ArrayList<Integer>();
             while (searchElecR.next()) {
-                int newId = searchElecQ.getInt("id");
+                int newId = searchElecR.getInt("id");
                 idList.add(newId);
             }
             for (int x = 0; x < idList.size(); x++) {
@@ -92,9 +92,9 @@ public class Assignment2 extends JDBCSubmission {
                     r.cabinets.add(cabinetsID);
                 }
             }
-            return result;
+            return r;
         } catch (SQLException se) {
-            System.err.println("SQL Exception. " + "<message>: " + m.getMessage());
+            System.err.println("SQL Exception. " + "<message>: " + se.getMessage());
             return null;
         }
     }
@@ -130,7 +130,7 @@ public class Assignment2 extends JDBCSubmission {
                     "FROM politician_president " +
                     "WHERE id <>" + Integer.toString(politicianName);
             ps = c.prepareStatement(query);
-            r = ps.excuteQuery();
+            r = ps.executeQuery();
 
             while (r.next()) {
                 int i = r.getInt("id");
@@ -141,7 +141,7 @@ public class Assignment2 extends JDBCSubmission {
                 }
             }
         } catch (SQLException se) {
-            System.err.println("SQL Exception. " + "<message>: " + m.getMessage());
+            System.err.println("SQL Exception. " + "<message>: " + se.getMessage());
         }
         return similarP;
 
