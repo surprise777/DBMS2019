@@ -48,13 +48,13 @@ public class Assignment2 extends JDBCSubmission {
         ElectionCabinetResult r = new ElectionCabinetResult(new ArrayList<Integer>(), new ArrayList<Integer>());
         try {
             String drop = "DROP VIEW " +
-                    "IF EXISTS Tempt CASCADE";
+                    "IF EXISTS Tempt CASCADE;";
             PreparedStatement dropState = connection.prepareStatement(drop);
             dropState.execute();
 
             String countryQ = "SELECT id " +
                     "FROM country " +
-                    "WHERE name = ?";
+                    "WHERE name = ?;";
             PreparedStatement countryStatement = connection.prepareStatement(countryQ);
             countryStatement.setString(1, countryName);
             ResultSet countryR = countryStatement.executeQuery();
@@ -65,11 +65,11 @@ public class Assignment2 extends JDBCSubmission {
                     "SELECT id, e_date, e_type AS type " +
                     "FROM election " +
                     "WHERE country_id = " + Integer.toString(countryID) + " " +
-                    "ORDER BY e_date DESC";
+                    "ORDER BY e_date DESC;";
             PreparedStatement electionStatement = connection.prepareStatement(electionQ);
             electionStatement.execute();
 
-            String searchElecQ = "SELECT * FROM Tempt";
+            String searchElecQ = "SELECT * FROM Tempt;";
             PreparedStatement searchStatement = connection.prepareStatement(searchElecQ);
             ResultSet searchElecR = searchStatement.executeQuery();
             ArrayList<Integer> idList = new ArrayList<Integer>();
@@ -82,7 +82,7 @@ public class Assignment2 extends JDBCSubmission {
                 String idQ = "SELECT id " +
                         "FROM cabinet " +
                         "WHERE election_id = ? " +
-                        "ORDER BY start_date";
+                        "ORDER BY start_date;";
                 PreparedStatement idStatement = connection.prepareStatement(idQ);
                 idStatement.setInt(1, index);
                 ResultSet idR = idStatement.executeQuery();
@@ -103,41 +103,39 @@ public class Assignment2 extends JDBCSubmission {
     public List<Integer> findSimilarPoliticians(Integer politicianName, Float threshold) {
         // Implement this method!
         Connection c = this.connection;
-        PreparedStatement ps;
-        ResultSet r;
-        String query;
-        String inputPresident;
+        PreparedStatement ps, ps1;
+        ResultSet r, r1;
+        String query, query1;
+        String inputPresident = new String("");
         String comparedPresident;
         float jSimilar;
         List<Integer> similarP = new ArrayList<Integer>();
 
         try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException ce) {
-            System.out.println("Failed to find the JDBC Driver.");
-        }
-        try {
             query = "SELECT id, description, comment " +
                     "FROM politician_president" +
-                    "WHERE id = ?";
+                    "WHERE id = ?;";
             ps = c.prepareStatement(query);
             ps.setInt(1, politicianName);
             r = ps.executeQuery();
-            r.next();
-            inputPresident = r.getString("description") + " " + r.getString("comment");
-
-            query = "SELECT id, description, comment " +
-                    "FROM politician_president " +
-                    "WHERE id <>" + Integer.toString(politicianName);
-            ps = c.prepareStatement(query);
-            r = ps.executeQuery();
-
             while (r.next()) {
-                int i = r.getInt("id");
-                comparedPresident = r.getString("description") + " " + r.getString("comment");
+                inputPresident = r.getString("description") + " " + r.getString("comment");
+            }
+
+            query1 = "SELECT id, description, comment " +
+                    "FROM politician_president " +
+                    "WHERE id <> " + Integer.toString(politicianName) + ";";
+            ps1 = c.prepareStatement(query1);
+            r1 = ps1.executeQuery();
+
+            while (r1.next()) {
+                comparedPresident = r1.getString("description") + " " + r1.getString("comment");
                 jSimilar = (float) similarity(inputPresident, comparedPresident);
                 if (jSimilar >= threshold) {
-                    similarP.add(i);
+                    int i = r1.getInt("id");
+                    if (i != politicianName) {
+                        similarP.add(i);
+                    }
                 }
             }
         } catch (SQLException se) {
