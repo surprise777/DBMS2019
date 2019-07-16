@@ -113,7 +113,7 @@ public class Assignment2 extends JDBCSubmission {
 
         try {
             query = "SELECT id, description, comment " +
-                    "FROM politician_president" +
+                    "FROM politician_president " +
                     "WHERE id = ?;";
             ps = c.prepareStatement(query);
             ps.setInt(1, politicianName);
