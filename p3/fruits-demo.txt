@@ -1,0 +1,47 @@
+Last login: Mon Aug  5 18:07:09 on ttys000
+akiras-MacBook-Pro:~ isabella$ ssh zhan4868@dbsrv1.teach.cs.toronto.edu
+zhan4868@dbsrv1.teach.cs.toronto.edu's password: 
+    Type "faq" to view FAQ, and "rules" to view usage policy.
+    Report system problems by sending email to <sysadmin@teach.cs.toronto.edu>.
+
+The Teaching Labs are: BA2200 BA2210 BA2220 BA2270 BA3175 BA3195 BA3200
+
+This is a shared Linux system. By using this system, you acknowledge that
+some information about your computer account (e.g. login name, process data,
+etc.) will be available to other users sharing this system, in ways 
+typical of shared Linux systems.  
+
+Last login: Mon Aug  5 20:19:23 2019 from public-126-26.nat.utoronto.ca
+dbsrv1:~$ psql csc343h-zhan4868
+psql (9.5.18)
+Type "help" for help.
+
+csc343h-zhan4868=> \i fruits.ddl
+psql:fruits.ddl:3: NOTICE:  drop cascades to 5 other objects
+DETAIL:  drop cascades to table fruits.store
+drop cascades to table fruits.juicetype
+drop cascades to table fruits.loyaltycard
+drop cascades to table fruits.storestock
+drop cascades to table fruits.transactions
+DROP SCHEMA
+CREATE SCHEMA
+SET
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+csc343h-zhan4868=> \q
+dbsrv1:~$ 
